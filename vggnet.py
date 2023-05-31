@@ -16,6 +16,8 @@ base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224,
 # Congela i pesi del modello base
 base_model.trainable = False
 
+print("test")
+
 # Costruisci il modello completo
 model = tf.keras.models.Sequential([
     base_model,

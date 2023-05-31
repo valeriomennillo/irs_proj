@@ -10,6 +10,7 @@ batch_size = 32
 epochs = 10
 target_size = (224, 224)
 print("test")
+print("123")
 # Carica il modello VGG16 pre-addestrato con pesi di ImageNet
 base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 

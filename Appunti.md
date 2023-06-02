@@ -76,5 +76,12 @@ Inoltre, si specifica che si utilizzerà la classe come `RequestHandler`, nel fi
 
 # 4. Rifinire plugin solar con Maven (pom.xml)
 
+# 5. Import model.h5 and keras modules integrated in plugin .jar file
+
+# 6. CNN_Model create and fix interaction with main CustomRequestHandler.java 
+convert python feature extractor.py to java
+
+# 7. Make standard query with extracted feature vector
+
 
 

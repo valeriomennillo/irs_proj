@@ -8,6 +8,9 @@ import org.apache.solr.security.AuthorizationContext;
 import org.apache.solr.security.PermissionNameProvider;
 import org.apache.solr.common.util.NamedList;
 
+import java.util.Random;
+
+
 public class CustomRequestHandler extends RequestHandlerBase {
 
     @Override
@@ -19,7 +22,9 @@ public class CustomRequestHandler extends RequestHandlerBase {
 
     @Override
     public void handleRequestBody(SolrQueryRequest req, SolrQueryResponse rsp) throws Exception {
-        rsp.add("message", "Custom request handler is working!");
+        Random random = new Random();
+        double randomDouble = random.nextDouble();
+        rsp.add("message", "Custom request handler3 is working!"+randomDouble);
     }
 
     @Override

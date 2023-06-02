@@ -62,6 +62,10 @@ Da adesso in poi, ci basta cambiare il file `solrconfig.xml` e riavviare solr pe
 # 3. Caricare plugin su solr 
 Il jar dovrà essere caricati nella cartella `.\solr\lib`.
 
+Nella parte adibita alle lib, si specifica la libreria da caricare (plugin)
+```xml
+<lib dir="${solr.install.dir:../../../..}/lib" regex="CustomHandler-1\.jar" />
+```
 Inoltre, si specifica che si utilizzerà la classe come `RequestHandler`, nel file del configset `solrconfig.xml`:
 
 ```xml

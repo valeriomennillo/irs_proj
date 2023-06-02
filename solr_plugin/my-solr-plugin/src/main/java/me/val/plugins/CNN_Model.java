@@ -1,16 +1,19 @@
 package me.val.plugins;
 
-import org.tensorflow.Graph;
+import java.awt.image.BufferedImage;
+/*import org.tensorflow.Graph;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
 import org.tensorflow.Tensors;
-import java.io.File;
+import java.io.File;*/
 
 public class CNN_Model {
-    private Session session;
+    //private Session session;
 
-    public void init(String modelFilePath) {
-        try {
+    public CNN_Model(String modelFilePath) {
+        //String modelFilePath = "model.h5";
+        System.out.println("Model initialized successfully.");
+        /*try {
             byte[] modelData = readModelData(modelFilePath);
             Graph graph = new Graph();
             graph.importGraphDef(modelData);
@@ -18,18 +21,19 @@ public class CNN_Model {
             System.out.println("Model initialized successfully.");
         } catch (Exception e) {
             System.err.println("Failed to initialize the model: " + e.getMessage());
-        }
+        }*/
     }
 
-    public float[] calculate(String imagePath) {
-        try {
-            float[] featureVector = preprocessImage(imagePath);
+    public float[] calculateFeatureVector(BufferedImage image) {
+        System.out.println("CALCULATED FEATURE VECTOR");
+        /*try {
+            float[] featureVector = preprocessImage(image);
             Tensor<Float> inputTensor = Tensors.create(featureVector);
             Tensor<Float> outputTensor = session.runner().feed("input", inputTensor)
-                                                       .fetch("output")
-                                                       .run()
-                                                       .get(0)
-                                                       .expect(Float.class);
+                    .fetch("output")
+                    .run()
+                    .get(0)
+                    .expect(Float.class);
             float[] output = outputTensor.copyTo(new float[outputTensor.shape()[0]]);
             inputTensor.close();
             outputTensor.close();
@@ -37,11 +41,12 @@ public class CNN_Model {
         } catch (Exception e) {
             System.err.println("Failed to calculate feature vector: " + e.getMessage());
             return null;
-        }
+        }*/
+        return null;
     }
 
     private byte[] readModelData(String modelFilePath) throws Exception {
-        File modelFile = new File(modelFilePath);
+        //File modelFile = new File(modelFilePath);
         // Implement the logic to read the model file data
         // and return it as a byte array
         return null;

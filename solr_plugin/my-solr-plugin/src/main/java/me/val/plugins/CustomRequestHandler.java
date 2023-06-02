@@ -19,6 +19,8 @@ import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.common.util.ContentStream;
 
+import me.val.plugins.CNN_Model;
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -35,13 +37,16 @@ import java.io.InputStreamReader;
 //curl -X POST -H "Content-Type: image/png" --data-binary "@0010005.png" http://localhost:8983/solr/new_core123/custom
 public class CustomRequestHandler extends RequestHandlerBase {
     private static boolean initialized = false;
+    private static CNN_Model model;
+
     @Override
     public void init(NamedList args) {
         super.init(args);
 
         if (!initialized) {
             // Esegui l'azione una sola volta qui
-            System.out.println("Esecuzione dell'azione una sola volta all'avvio di Solr. Qui ci sarà caricamento del modello .h5");
+            model = new CNN_Model("model.h5");
+            
             initialized = true;
         }
     }
@@ -67,6 +72,8 @@ public class CustomRequestHandler extends RequestHandlerBase {
                     SolrInputDocument doc = new SolrInputDocument();
                     doc.addField("image_width", width);
                     doc.addField("image_height", height);
+
+                    float[] result = model.calculateFeatureVector(image);
 
                     InputStream inputStream = CustomRequestHandler.class.getClassLoader().getResourceAsStream("hello.txt");
                     String hello = "";

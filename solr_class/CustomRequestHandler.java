@@ -23,14 +23,18 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
+//curl -X POST -H "Content-Type: image/png" --data-binary "@0010005.png" http://localhost:8983/solr/new_core123/custom
 public class CustomRequestHandler extends RequestHandlerBase {
-
+    private static boolean initialized = false;
     @Override
     public void init(NamedList args) {
         super.init(args);
 
-        System.out.println("OINDAOGNADNGDOAI\n\n\n");
+        if (!initialized) {
+            // Esegui l'azione una sola volta qui
+            System.out.println("Esecuzione dell'azione una sola volta all'avvio di Solr. Qui ci sarà caricamento del modello .h5");
+            initialized = true;
+        }
     }
 
     @Override

@@ -20,9 +20,8 @@ import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.common.util.ContentStream;
 
 import me.val.plugins.CNN_Model;
-import me.val.plugins.FeatureExtractor;
 
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -76,9 +75,6 @@ public class CustomRequestHandler extends RequestHandlerBase {
                     doc.addField("image_height", height);
 
                     
-                    //FeatureExtractor f = new FeatureExtractor();
-                    //double[] result = FeatureExtractor.extractFeatures(image);
-                    
                     float[] result = model.calculateFeatureVector(image);
                     
                     for (float num : result) {
@@ -90,7 +86,9 @@ public class CustomRequestHandler extends RequestHandlerBase {
                     docMap.putAll(doc);
 
                     // Add the document to the response
+                    String arrayAsString = Arrays.toString(result);
                     rsp.add("image_resolution_x", docMap);
+                    rsp.add("feature_vector",arrayAsString);
                 }
             }
         } catch (IOException e) {

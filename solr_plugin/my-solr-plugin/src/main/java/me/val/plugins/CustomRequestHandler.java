@@ -6,7 +6,6 @@ import org.apache.solr.response.SolrQueryResponse;
 
 import org.apache.solr.security.AuthorizationContext;
 import org.apache.solr.common.util.NamedList;
-import org.apache.commons.io.FileUtils;
 import org.apache.lucene.util.IOUtils;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrInputDocument;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+
 import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
@@ -27,9 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 //curl -X POST -H "Content-Type: image/png" --data-binary "@0070039.png" http://localhost:8983/solr/new_core123/custom
 public class CustomRequestHandler extends RequestHandlerBase {

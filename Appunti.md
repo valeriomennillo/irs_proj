@@ -60,7 +60,7 @@ bin\solr.cmd start -f
 Da adesso in poi, ci basta cambiare il file `solrconfig.xml` e riavviare solr per effettuare dei cambiamenti.
 
 # 3. Caricare plugin su solr 
-Il jar dovrà essere caricati nella cartella `.\solr\lib`.
+Il jar dovrà essere caricato nella cartella `.\solr\lib`.
 
 Nella parte adibita alle lib, si specifica la libreria da caricare (plugin)
 ```xml
@@ -94,17 +94,15 @@ Sono stati aggiunti nella directory `solr-9.2.1\server\solr-webapp\webapp\WEB-IN
 
 # 5. Import saved_model to Apache Solr plugin
 
-Copiare temporaneamente `resources\saved_model` in una cartella temporanea. In particolare, in `.\solr\tmp`.
-Dopodiché, si aggiunge il modello e si lavora con esso
+Il jar contiene `resources\saved_model.zip` che è uno zip contenente la snapshot della rete neurale opportunamente tunata. Viene unzippato all'avvio e messo nella cartella temporanea di solr: `.\solr\tmp`.
 
-# 7. Preprocessing 
+# 6. Preprocessing 
 
 1. Ridimensionamento: se l'immagine è di dimensione diversa da 224x224, viene portata a tale risoluzione
 2. La funzione img_to_array converte un'immagine di tipo PIL (Python Imaging Library) in un array NumPy. In Java, la funzione `normalizeImage_f` prende in input un array multidimensionale `image` di tipo `float[][][][]`, che rappresenta un'immagine con dimensioni di batch, altezza, larghezza e canali. La funzione itera su tutti i pixel dell'immagine e applica la normalizzazione seguendo i passaggi seguenti:
     In poche parole, la funzione normalizza l'immagine sottraendo il valore medio e dividendo per il fattore di scala, mentre inverte i canali rosso e blu.
 
 con `saved_model_cli` è stato visto l'output della rete
-
 
 
 # 7. Make standard query with extracted feature vector

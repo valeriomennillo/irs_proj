@@ -15,7 +15,7 @@ model = load_model(saved_model_path)
 feature_extractor = Model(inputs=model.input, outputs=model.get_layer('dense').output)
 
 def calculate_feature_vector(image_path):
-        
+    from keras.applications.vgg16 import preprocess_input
     # Load and preprocess the image
     img = load_img(image_path, target_size=(224, 224))
     x = img_to_array(img)

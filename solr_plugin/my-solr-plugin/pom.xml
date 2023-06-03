@@ -52,6 +52,13 @@
         <version>9.2.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.tensorflow/tensorflow -->
+    <dependency>
+        <groupId>org.tensorflow</groupId>
+        <artifactId>tensorflow</artifactId>
+        <version>1.15.0</version>
+    </dependency>
+
 
   </dependencies>
 </project>

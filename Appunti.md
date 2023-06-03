@@ -76,8 +76,26 @@ Inoltre, si specifica che si utilizzerà la classe come `RequestHandler`, nel fi
 
 # 4. Rifinire plugin solar con Maven (pom.xml)
 
+# 4.5 Import Tensorflow in Apache Solr (classpath)
+
+1. è stato disabilitato il Security Manager perché non consentiva di modificare il classpath
+
+```cmd
+IF NOT DEFINED SOLR_SECURITY_MANAGER_ENABLED (
+  set SOLR_SECURITY_MANAGER_ENABLED=false
+)
+```
+
+Sono stati aggiunti nella directory `solr-9.2.1\server\solr-webapp\webapp\WEB-INF\lib` le librerie per tensorflow:
+* `libtensorflow-1.15.0-javadoc.jar`
+* `libtensorflow-1.15.0-sources.jar`
+* `libtensorflow-1.15.0.jar`
+* `libtensorflow_jni-1.15.0.jar`
+
 # 5. Import model.h5 and keras modules integrated in plugin .jar file
 
+Copiare temporaneamente `resources\saved_model` in una cartella temporanea. In particolare, in `.\solr\tmp`.
+Dopodiché, si aggiunge il modello e si lavora con esso
 # 6. CNN_Model create and fix interaction with main CustomRequestHandler.java 
 convert python feature extractor.py to java
 

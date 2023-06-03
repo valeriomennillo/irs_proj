@@ -45,7 +45,7 @@ public class CustomRequestHandler extends RequestHandlerBase {
 
         if (!initialized) {
             // Esegui l'azione una sola volta qui
-            model = new CNN_Model("model.h5");
+            model = new CNN_Model();
             
             initialized = true;
         }
@@ -74,7 +74,9 @@ public class CustomRequestHandler extends RequestHandlerBase {
                     doc.addField("image_height", height);
 
                     float[] result = model.calculateFeatureVector(image);
-
+                    for (float num : result) {
+                        System.out.println(num);
+                    }    
                     InputStream inputStream = CustomRequestHandler.class.getClassLoader().getResourceAsStream("hello.txt");
                     String hello = "";
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {

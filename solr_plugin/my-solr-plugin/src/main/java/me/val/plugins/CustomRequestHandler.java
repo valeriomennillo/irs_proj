@@ -22,6 +22,7 @@ import org.apache.solr.common.util.ContentStream;
 import me.val.plugins.CNN_Model;
 import me.val.plugins.FeatureExtractor;
 
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -74,29 +75,16 @@ public class CustomRequestHandler extends RequestHandlerBase {
                     doc.addField("image_width", width);
                     doc.addField("image_height", height);
 
-                    //float[] result = model.calculateFeatureVector(image);
-                    FeatureExtractor f = new FeatureExtractor();
                     
-
-                    double[] result = FeatureExtractor.extractFeatures(image);
-                    for (double num : result) {
+                    //FeatureExtractor f = new FeatureExtractor();
+                    //double[] result = FeatureExtractor.extractFeatures(image);
+                    
+                    float[] result = model.calculateFeatureVector(image);
+                    
+                    for (float num : result) {
                         System.out.println(num);
                     }    
                     
-                    InputStream inputStream = CustomRequestHandler.class.getClassLoader().getResourceAsStream("hello.txt");
-                    String hello = "";
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            System.out.println(line);
-                            hello = line;
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    doc.addField("value",hello);
-
                     // Convert SolrInputDocument to Map<String, Object>
                     Map<String, Object> docMap = new HashMap<>();
                     docMap.putAll(doc);

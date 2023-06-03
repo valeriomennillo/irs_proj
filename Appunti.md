@@ -99,6 +99,14 @@ Dopodiché, si aggiunge il modello e si lavora con esso
 # 6. CNN_Model create and fix interaction with main CustomRequestHandler.java 
 convert python feature extractor.py to java
 
+# 7. Preprocessing 
+
+1. Ridimensionamento: se l'immagine è di dimensione diversa da 224x224, viene portata a tale risoluzione
+2. La funzione img_to_array converte un'immagine di tipo PIL (Python Imaging Library) in un array NumPy. In Java, ..? (da approfondire)
+3. Valori vengono divisi per media e deviazione standard
+
+con saved_model_cli è stato visto l'output della rete
+
 # 7. Make standard query with extracted feature vector
 
 

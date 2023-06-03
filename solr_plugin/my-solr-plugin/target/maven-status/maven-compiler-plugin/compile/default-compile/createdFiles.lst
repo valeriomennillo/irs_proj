@@ -1,3 +1,4 @@
 me\val\plugins\FeatureExtractor.class
 me\val\plugins\CNN_Model.class
 me\val\plugins\CustomRequestHandler.class
+me\val\plugins\VGG16Normalizer.class

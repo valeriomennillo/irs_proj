@@ -22,11 +22,10 @@ print("test")
 model = tf.keras.models.Sequential([
     base_model,
     tf.keras.layers.Flatten(),
-    #tf.keras.layers.Dense(size_dense, activation='relu'),
     tf.keras.layers.Dense(size_dense, activation=tf.keras.layers.LeakyReLU(alpha=0.2)),
-
     tf.keras.layers.Dense(10, activation='softmax')  # 10 classi
 ])
+
 
 # Compila il modello
 model.compile(optimizer='adam',

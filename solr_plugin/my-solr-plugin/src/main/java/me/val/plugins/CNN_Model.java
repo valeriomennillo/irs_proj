@@ -3,6 +3,9 @@ package me.val.plugins;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.net.URL;
+
 import org.tensorflow.SavedModelBundle;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
@@ -16,7 +19,6 @@ import org.tensorflow.Operation;
 import java.nio.FloatBuffer;
 
 public class CNN_Model {
-    final String value = "\n\nHello from " + TensorFlow.version();
 
     private static final float MEAN_R = 123.68f;
     private static final float MEAN_G = 116.779f;
@@ -26,45 +28,24 @@ public class CNN_Model {
     private static Session session;
     private static SavedModelBundle savedModel;
 
-    public CNN_Model() {
-        System.out.println(value);
-        String modelPath = "C:\\Users\\gianlu\\Desktop\\solr-9.2.1\\server\\tmp\\saved_model";
-
+    public CNN_Model(String modelPath) {
+        System.out.println("[APACHE SOLR PLUGIN] TENSORFLOW VERSION: " + TensorFlow.version());
         try {
             savedModel = SavedModelBundle.load(modelPath, "serve");
             session = savedModel.session();
-            System.out.println(session.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Iterator<Operation> iterator = savedModel.graph().operations();
-        while (iterator.hasNext()) {
-            Operation operation = iterator.next();
-            System.out.println(operation.name());
-
-        }
-
-        try (SavedModelBundle savedModel = SavedModelBundle.load(modelPath, "serve")) {
-            // Get the MetaGraphDef from the saved model
-            Graph graph = savedModel.graph();
-
-            // Print the loaded model
-            System.out.println(graph.toGraphDef());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public float[] calculateFeatureVector(BufferedImage image) {
-        System.out.println("calculating FEATURE VECTOR");
+        System.out.println("[APACHE SOLR PLUGIN] calculating FEATURE VECTOR");
 
         String inputTensorName = "serving_default_vgg16_input";
         String outputTensorName = "StatefulPartitionedCall";
 
         BufferedImage resizedImage = resizeImage(image, 224, 224);
-
-        //BufferedImage normalizedImage = normalizeImage(resizedImage);
 
         float[][][][] inputArray = convertImageToArray(resizedImage);
 
@@ -97,7 +78,7 @@ public class CNN_Model {
         floatBuffer.get(features);
 
         // Implement the logic to calculate the feature vector using the loaded model
-        System.out.println("CALCULATED FEATURE VECTOR");
+        System.out.println("[APACHE SOLR PLUGIN] CALCULATED FEATURE VECTOR");
         return features;
     }
 
@@ -174,8 +155,6 @@ public class CNN_Model {
         return normalizedImage;
     }
     
-    
-
     public static BufferedImage resizeImage(BufferedImage image, int targetWidth, int targetHeight) {
         BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = resizedImage.createGraphics();

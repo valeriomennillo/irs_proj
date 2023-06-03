@@ -92,20 +92,20 @@ Sono stati aggiunti nella directory `solr-9.2.1\server\solr-webapp\webapp\WEB-IN
 * `libtensorflow-1.15.0.jar`
 * `libtensorflow_jni-1.15.0.jar`
 
-# 5. Import model.h5 and keras modules integrated in plugin .jar file
+# 5. Import saved_model to Apache Solr plugin
 
 Copiare temporaneamente `resources\saved_model` in una cartella temporanea. In particolare, in `.\solr\tmp`.
 Dopodiché, si aggiunge il modello e si lavora con esso
-# 6. CNN_Model create and fix interaction with main CustomRequestHandler.java 
-convert python feature extractor.py to java
 
 # 7. Preprocessing 
 
 1. Ridimensionamento: se l'immagine è di dimensione diversa da 224x224, viene portata a tale risoluzione
-2. La funzione img_to_array converte un'immagine di tipo PIL (Python Imaging Library) in un array NumPy. In Java, ..? (da approfondire)
-3. Valori vengono divisi per media e deviazione standard
+2. La funzione img_to_array converte un'immagine di tipo PIL (Python Imaging Library) in un array NumPy. In Java, la funzione `normalizeImage_f` prende in input un array multidimensionale `image` di tipo `float[][][][]`, che rappresenta un'immagine con dimensioni di batch, altezza, larghezza e canali. La funzione itera su tutti i pixel dell'immagine e applica la normalizzazione seguendo i passaggi seguenti:
+    In poche parole, la funzione normalizza l'immagine sottraendo il valore medio e dividendo per il fattore di scala, mentre inverte i canali rosso e blu.
 
-con saved_model_cli è stato visto l'output della rete
+con `saved_model_cli` è stato visto l'output della rete
+
+
 
 # 7. Make standard query with extracted feature vector
 

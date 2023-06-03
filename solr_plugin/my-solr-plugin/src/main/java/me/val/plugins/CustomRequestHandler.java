@@ -54,7 +54,7 @@ public class CustomRequestHandler extends RequestHandlerBase {
 
     public static String extractModelFromResource() throws IOException, URISyntaxException {
         String resourceZipPath = "saved_model.zip"; // Path to the zip file in "resources" folder
-        System.out.println("[APACHE SOLR PLUGIN] temp folder is "+ System.getProperty("java.io.tmpdir"));
+        System.out.println("[APACHE SOLR PLUGIN] temp folder is " + System.getProperty("java.io.tmpdir"));
         String destinationFolderPath = System.getProperty("java.io.tmpdir") + "\\saved_model"; // Destination folder
                                                                                                // path
 
@@ -70,7 +70,6 @@ public class CustomRequestHandler extends RequestHandlerBase {
             return destinationFolderPath;
         }
         destinationFolder.mkdirs();
-
 
         // Extract the zip file
         try (ZipInputStream zipInputStream = new ZipInputStream(

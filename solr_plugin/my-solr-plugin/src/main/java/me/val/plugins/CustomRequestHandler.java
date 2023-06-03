@@ -76,11 +76,13 @@ public class CustomRequestHandler extends RequestHandlerBase {
 
                     //float[] result = model.calculateFeatureVector(image);
                     FeatureExtractor f = new FeatureExtractor();
-                    f.extractFeatures()
-                    double[] result = f.cal 
-                    for (float num : result) {
+                    
+
+                    double[] result = FeatureExtractor.extractFeatures(image);
+                    for (double num : result) {
                         System.out.println(num);
                     }    
+                    
                     InputStream inputStream = CustomRequestHandler.class.getClassLoader().getResourceAsStream("hello.txt");
                     String hello = "";
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {

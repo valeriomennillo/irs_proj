@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import org.datavec.image.loader.Java2DNativeImageLoader;
 
+import org.deeplearning4j.nn.modelimport.keras.SequentialModelImporter;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 
 public class FeatureExtractor {
     private static final int IMAGE_WIDTH = 224;
@@ -22,6 +24,8 @@ public class FeatureExtractor {
         // Load the Keras model
         String modelPath = "C:\\Users\\gianlu\\Desktop\\solr-9.2.1\\server\\tmp\\model.h5";
         try {
+            MultiLayerNetwork network = SequentialModelImporter.importSequentialModel(modelPath);
+
             ComputationGraph model = KerasModelImport.importKerasModelAndWeights(modelPath);
 
             // Load and preprocess the image
@@ -46,17 +50,4 @@ public class FeatureExtractor {
         return null;
     }
 
-    public static void main(String[] args) {
-        try {
-            String imagePath = "path/to/your/image.jpg";
-            double[] features = extractFeatures(imagePath);
-
-            // Print the extracted features
-            for (double feature : features) {
-                System.out.println(feature);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

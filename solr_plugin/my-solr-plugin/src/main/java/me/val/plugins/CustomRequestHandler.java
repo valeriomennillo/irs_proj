@@ -20,6 +20,7 @@ import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.common.util.ContentStream;
 
 import me.val.plugins.CNN_Model;
+import me.val.plugins.FeatureExtractor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +74,10 @@ public class CustomRequestHandler extends RequestHandlerBase {
                     doc.addField("image_width", width);
                     doc.addField("image_height", height);
 
-                    float[] result = model.calculateFeatureVector(image);
+                    //float[] result = model.calculateFeatureVector(image);
+                    FeatureExtractor f = new FeatureExtractor();
+                    f.extractFeatures()
+                    double[] result = f.cal 
                     for (float num : result) {
                         System.out.println(num);
                     }    

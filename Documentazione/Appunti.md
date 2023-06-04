@@ -107,7 +107,7 @@ Il jar contiene `resources\saved_model.zip` che è uno zip contenente la snapsho
 con `saved_model_cli` è stato visto l'output della rete
 
 
-# 7. Aggiungere dense vector a schema
+# 7. Aggiungere dense vector a `managed-schema.xml`
 
 ```xml
 <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="64" similarityFunction="cosine"/>
@@ -142,7 +142,7 @@ curl -X POST -H "Content-Type: application/json" -d "{'delete': {'query': '*:*'}
 
 Usando `q={!knn f=feature_vector topK=10}[x_1, x_2, ..., x_64]` restituisce i più simili. Per capire quanto sono simili, ricalcoliamo nel plugin la cosine_similarity.
 
-# 10. Interagisci col plugin
+# 10. Interagire col plugin
 
 ```cmd
 curl -X POST -H "Content-Type: image/png" --data-binary "@0070039.png" http://localhost:8983/solr/new_core123/custom

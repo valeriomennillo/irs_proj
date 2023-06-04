@@ -3,16 +3,29 @@ package me.val.plugins;
 import org.apache.solr.handler.RequestHandlerBase;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.response.SolrQueryResponse;
-
+import org.apache.solr.search.SolrIndexSearcher;
 import org.apache.solr.security.AuthorizationContext;
 import org.apache.solr.common.util.NamedList;
+import org.apache.lucene.index.SortedNumericDocValues;
 import org.apache.lucene.util.IOUtils;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.util.ContentStream;
 
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
+
+import org.apache.solr.common.SolrDocument;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 
@@ -119,23 +132,63 @@ public class CustomRequestHandler extends RequestHandlerBase {
 
                     // Create a Solr document to hold the response
                     SolrInputDocument doc = new SolrInputDocument();
-                    doc.addField("image_width", width);
-                    doc.addField("image_height", height);
+                    doc.addField("width", width);
+                    doc.addField("height", height);
 
                     float[] result = model.calculateFeatureVector(image);
 
-                    for (float num : result) {
-                        System.out.println(num);
+                    Float[] featureVector = new Float[result.length];
+                    for (int i = 0; i < result.length; i++) {
+                        featureVector[i] = result[i];
                     }
+
+                    // Add the document to the response
+                    String arrayAsString = Arrays.toString(result);
+
+                    doc.addField("feature_vector", featureVector);
 
                     // Convert SolrInputDocument to Map<String, Object>
                     Map<String, Object> docMap = new HashMap<>();
                     docMap.putAll(doc);
 
-                    // Add the document to the response
-                    String arrayAsString = Arrays.toString(result);
-                    rsp.add("image_resolution_x", docMap);
-                    rsp.add("feature_vector", arrayAsString);
+
+
+                    rsp.add("image_info", docMap);
+
+                    // calculate similar documents by their rank
+
+                    // namedList.add("result", resultFloatArray);
+
+                    String solrUrl = "http://localhost:8983/solr";
+                    String collectionName = "new_core123";
+                    int topK = 10;
+
+                    List<SolrDocument> searchResults = searchDocuments(solrUrl, collectionName, featureVector, topK);
+
+                    //Map<String, Object> documentAndSimilarities = new HashMap<>();
+                    List<Map<String, Object>> documentsAndSimilarities = new ArrayList<>();
+
+                    for (SolrDocument retrieved_doc : searchResults) {
+                        List<String> documentVectorObj = (List<String>) retrieved_doc.getFieldValue("feature_vector");
+
+                        Float[] documentVector = documentVectorObj.stream()
+                                .map(Float::valueOf)
+                                .toArray(Float[]::new);
+
+                        double similarityScore = calculateCosineSimilarity(featureVector, documentVector);
+
+                        // Creazione del documento corrente come un oggetto Map
+                        Map<String, Object> document = new HashMap<>();
+                        document.put("document", retrieved_doc);
+                        document.put("similarity", similarityScore);
+
+                        // Aggiunta del documento corrente alla lista dei documenti e similarità
+                        documentsAndSimilarities.add(document);
+                    }
+
+                    // Aggiunta della lista dei documenti e similarità alla SolrQueryResponse
+                    rsp.add("documents", documentsAndSimilarities);
+
                 }
             }
         } catch (IOException e) {
@@ -154,5 +207,71 @@ public class CustomRequestHandler extends RequestHandlerBase {
     public Name getPermissionName(AuthorizationContext context) {
         // Return the permission name based on the authorization context
         return null;
+    }
+
+    // Calculate cosine similarity between two vectors
+    private static double calculateCosineSimilarity(Float[] vector1, Float[] vector2) {
+        double dotProduct = 0.0;
+        double magnitudeVector1 = 0.0;
+        double magnitudeVector2 = 0.0;
+
+        for (int i = 0; i < vector1.length; i++) {
+            dotProduct += vector1[i] * vector2[i];
+            magnitudeVector1 += Math.pow(vector1[i], 2);
+            magnitudeVector2 += Math.pow(vector2[i], 2);
+        }
+
+        magnitudeVector1 = Math.sqrt(magnitudeVector1);
+        magnitudeVector2 = Math.sqrt(magnitudeVector2);
+
+        if (magnitudeVector1 == 0.0 || magnitudeVector2 == 0.0) {
+            return 0.0;
+        }
+
+        return dotProduct / (magnitudeVector1 * magnitudeVector2);
+    }
+
+    public static List<SolrDocument> searchDocuments(String solrUrl, String collectionName, Float[] featureVector,
+            int topK) {
+        List<SolrDocument> results = new ArrayList<>();
+
+        try {
+            // Create a SolrClient instance
+            SolrClient solrClient = new HttpSolrClient.Builder(solrUrl + "/" + collectionName).build();
+
+            // Create a SolrQuery instance
+            SolrQuery solrQuery = new SolrQuery();
+            solrQuery.setQuery("{!knn f=feature_vector topK=" + topK + "}" + featureVectorToString(featureVector));
+
+            // Execute the query
+            QueryResponse response = solrClient.query(solrQuery);
+
+            // Get the result documents
+            SolrDocumentList solrDocuments = response.getResults();
+
+            // Add the documents to the results list
+            results.addAll(solrDocuments);
+
+            // Close the SolrClient
+            solrClient.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return results;
+    }
+
+    // Utility method to convert Float[] to String
+    private static String featureVectorToString(Float[] featureVector) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for (int i = 0; i < featureVector.length; i++) {
+            if (i > 0) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(featureVector[i]);
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 }

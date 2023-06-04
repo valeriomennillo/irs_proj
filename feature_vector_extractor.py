@@ -77,9 +77,16 @@ descriptions = [
 
 for img_path in glob.glob("images/*.png"):
     id = get_id_from_name(img_path)
-    sol.append({"image_id":img_path.split("\\")[1].split(".")[0],"image_path":img_path,"feature_vector":calculate_feature_vector(img_path),"scientific_name":scientific_names[id],"common_name":common_names[id],"description":descriptions[id]})
+    
+    new_item = {}
+    new_item['image_id']=img_path.split("\\")[1].split(".")[0]
+    new_item['image_path']=img_path
+    new_item['scientific_name']=scientific_names[id]
+    new_item['common_name']=common_names[id]
+    new_item['description']=descriptions[id]
+    new_item['feature_vector']=calculate_feature_vector(img_path)
     print(img_path)
-
+    sol.append(new_item)
     
 
 with open(saved_model_path.replace(".h5",".json"), 'w') as filehandle:

@@ -2,18 +2,12 @@ package me.val.plugins;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.net.URL;
 
 import org.tensorflow.SavedModelBundle;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
 import org.tensorflow.Tensors;
 import org.tensorflow.TensorFlow;
-
-import java.util.Iterator;
-import org.tensorflow.Graph;
-import org.tensorflow.Operation;
 
 import java.nio.FloatBuffer;
 
@@ -48,7 +42,7 @@ public class CNN_Model {
 
         float[][][][] inputArray = convertImageToArray(resizedImage);
 
-        float[][][][] inputArray2 = normalizeImage_f(inputArray);
+        float[][][][] inputArray2 = normalizeImage(inputArray);
 
         // Create the input tensor
         Tensor<Float> inputTensor = Tensors.create(inputArray2);
@@ -81,7 +75,7 @@ public class CNN_Model {
         return features;
     }
 
-    public static float[][][][] normalizeImage_f(float[][][][] image) {
+    public static float[][][][] normalizeImage(float[][][][] image) {
         int batchSize = image.length;
         int height = image[0].length;
         int width = image[0][0].length;
@@ -117,42 +111,6 @@ public class CNN_Model {
         return normalizedImage;
     }
 
-    public static BufferedImage normalizeImage(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        BufferedImage normalizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-        // Itera su tutti i pixel dell'immagine e applica la normalizzazione e
-        // l'inversione dei canali
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int rgb = image.getRGB(x, y);
-                int r = (rgb >> 16) & 0xFF;
-                int g = (rgb >> 8) & 0xFF;
-                int b = rgb & 0xFF;
-
-                // Applica la normalizzazione dei canali R, G e B
-                float normalizedR = (r - MEAN_R) / SCALE_FACTOR;
-                float normalizedG = (g - MEAN_G) / SCALE_FACTOR;
-                float normalizedB = (b - MEAN_B) / SCALE_FACTOR;
-
-                // Inverti i canali R e B
-                float invertedR = normalizedB;
-                float invertedB = normalizedR;
-
-                // Combina i canali normalizzati e invertiti in un singolo pixel
-                int invertedRgb = ((int) (invertedR * SCALE_FACTOR + MEAN_R) << 16) |
-                        ((int) (normalizedG * SCALE_FACTOR + MEAN_G) << 8) |
-                        (int) (invertedB * SCALE_FACTOR + MEAN_B);
-
-                // Imposta il pixel normalizzato e con canali invertiti nell'immagine di output
-                normalizedImage.setRGB(x, y, invertedRgb);
-            }
-        }
-
-        return normalizedImage;
-    }
 
     public static BufferedImage resizeImage(BufferedImage image, int targetWidth, int targetHeight) {
         BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);

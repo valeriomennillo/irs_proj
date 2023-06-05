@@ -24,7 +24,6 @@ import org.apache.solr.common.SolrDocument;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -60,8 +59,6 @@ public class CustomRequestHandler extends RequestHandlerBase {
             } catch (URISyntaxException e) {
                 System.out.println(e);
             }
-
-            //
         }
     }
 

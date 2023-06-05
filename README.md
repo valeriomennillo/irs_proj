@@ -178,5 +178,5 @@ Quando un browser esegue una richiesta AJAX da un'origine (dominio, protocollo e
 </filter-mapping>
 ```
 
-Filtro aggiunto in `C:\Users\gianlu\Desktop\solr-9.2.1\server\solr-webapp\webapp\WEB-INF\web.xml`
+Filtro aggiunto in `C:\Users\user\Desktop\solr-9.2.1\server\solr-webapp\webapp\WEB-INF\web.xml`
 Il file `web.xml` in Apache Solr è un file di configurazione che definisce il comportamento del servlet container (ad esempio, Apache Tomcat) per il deployment di Solr come applicazione web.

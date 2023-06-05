@@ -98,12 +98,14 @@ con `saved_model_cli` è stato visto i nomi dei tensori di input e di output del
 
 ```xml
 <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="64" similarityFunction="cosine"/>
-<field name="image_id" type="string" indexed="true" stored="true" required="true" />
-<field name="image_path" type="string" indexed="true" stored="true" required="true" />
-<field name="scientific_name" type="text_general" indexed="true" stored="true" />
-<field name="common_name" type="text_general" indexed="true" stored="true" />
-<field name="description" type="text_general" indexed="true" stored="true" />
+
 <field name="feature_vector" type="knn_vector" indexed="true" stored="true" required="true"/>
+<field name="image_id" type="string" indexed="false" required="true" />
+<field name="image_path" type="string" indexed="false" required="true" />
+<field name="scientific_name" type="text_general" indexed="true"/>
+<field name="common_name" type="text_general" indexed="true" />
+<field name="description" type="text_general" indexed="true" />
+
 <uniqueKey>image_id</uniqueKey>
 ```
 
@@ -167,5 +169,5 @@ Abilitare CORS è utile per contattare Solr da `localhost` attraverso un file `i
 </filter-mapping>
 ```
 
-Filtro aggiunto in `C:\Users\user\Desktop\solr-9.2.1\server\solr-webapp\webapp\WEB-INF\web.xml`
+Filtro aggiunto in `.\solr-9.2.1\server\solr-webapp\webapp\WEB-INF\web.xml`
 Il file `web.xml` in Apache Solr è un file di configurazione che definisce il comportamento del servlet container (ad esempio, Apache Tomcat) per il deployment di Solr come applicazione web.

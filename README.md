@@ -1,3 +1,5 @@
+# Dense Vector Search Application: Query By Example
+
 # PDF Tesina contenuto nella cartella "tesina"
 
 # 1. Scrivere CustomRequestHandler (o altre classi)

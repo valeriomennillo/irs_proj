@@ -1,0 +1,16 @@
+@startuml
+// to import to https://sequencediagram.org/
+actor User
+participant "Apache Solr Plugin" as Plugin
+participant "Apache Solr" as Solr
+
+User -> Plugin: POST /custom with image binary data
+activate Plugin
+Plugin -> Plugin: Compute feature vector
+Plugin -> Solr: POST /select with feature vector (Dense Vector Search)
+activate Solr
+Solr --> Plugin: Query results
+deactivate Solr
+Plugin --> User: Return results
+deactivate Plugin
+@enduml

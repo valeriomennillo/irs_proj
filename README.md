@@ -91,7 +91,7 @@ Il jar contiene `resources\saved_model.zip` che è uno zip contenente la snapsho
 2. La funzione img_to_array converte un'immagine di tipo PIL (Python Imaging Library) in un array NumPy. In Java, la funzione `normalizeImage_f` prende in input un array multidimensionale `image` di tipo `float[][][][]`, che rappresenta un'immagine con dimensioni di batch, altezza, larghezza e canali. La funzione itera su tutti i pixel dell'immagine e applica la normalizzazione seguendo i passaggi seguenti:
     In poche parole, la funzione normalizza l'immagine sottraendo il valore medio e dividendo per il fattore di scala, mentre inverte i canali rosso e blu.
 
-con `saved_model_cli` è stato visto l'output della rete
+con `saved_model_cli` è stato visto i nomi dei tensori di input e di output della rete.
 
 
 # 7. Aggiungere dense vector a `managed-schema.xml`
